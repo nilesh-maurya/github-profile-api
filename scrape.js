@@ -130,7 +130,7 @@ module.exports.getEachRepo = (username, next = "") => {
 
       let after = "";
 
-      if (afterValue.includes("after")) {
+      if (afterValue && afterValue.includes("after")) {
         after = afterValue.match(/after=(.*)/)[1].slice(0, 56);
         console.log(afterValue, after);
       }
