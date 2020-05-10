@@ -37,11 +37,11 @@ module.exports.getPinnedRepo = (username) => {
             "p.pinned-item-desc"
           );
 
-          pinnedRepo.isForkedFrom = false;
+          pinnedRepo.isForked = false;
 
           if ($element.find("p.mb-2").length) {
-            pinnedRepo.isForkedFrom = true;
-            pinnedRepo.ForkedFrom = findAndExtractText($element, "p.mb-2");
+            pinnedRepo.isForked = true;
+            pinnedRepo.forkedFrom = findAndExtractText($element, "p.mb-2");
           }
 
           pinnedRepo.progLang = findAndExtractText(
@@ -130,7 +130,7 @@ module.exports.getEachRepo = (username, next = "") => {
 
       let after = "";
 
-      if (afterValue) {
+      if (afterValue.includes("after")) {
         after = afterValue.match(/after=(.*)/)[1].slice(0, 56);
         console.log(afterValue, after);
       }
