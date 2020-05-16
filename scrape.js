@@ -121,6 +121,11 @@ module.exports.getEachRepo = (username, next = "") => {
           `.f6 a[href="/${username}/${repo.repoName}/network/members"]`
         );
 
+        repo.lastUpdated = findAndExtractText(
+          $element,
+          ".f6 relative-time.no-wrap"
+        );
+
         repos.push(repo);
       });
 
