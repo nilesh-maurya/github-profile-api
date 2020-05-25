@@ -34,6 +34,7 @@ app.get("/api/:username", async (req, res, next) => {
       repoDataPromise,
     ]);
     res.json({
+      type: user.type,
       username: user.login,
       avatar: user.avatar_url,
       html_url: user.html_url,

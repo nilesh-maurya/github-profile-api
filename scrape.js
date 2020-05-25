@@ -7,7 +7,7 @@ function findAndExtractText(element, query) {
   return element.find(query).text().trim();
 }
 
-function extractEachRepo(repos, $element) {
+function extractEachRepo($, username, $element) {
   const repo = {};
   repo.repoName = $element.find(".wb-break-all").text().trim();
 
@@ -46,7 +46,7 @@ function extractEachRepo(repos, $element) {
 
   repo.lastUpdated = findAndExtractText($element, ".f6 relative-time.no-wrap");
 
-  repos.push(repo);
+  return repo;
 }
 
 module.exports.getUserData = (username) => {
@@ -114,9 +114,8 @@ module.exports.getPinnedRepo = (username) => {
 };
 
 module.exports.getUserRepo = (username, next = "") => {
-  console.log(`https://github.com/${username}?tab=repositories&after=${next}`);
   return axios
-    .get(`https://github.com/${username}?after=${next}&tab=repositories`)
+    .get(`https://github.com/${username}?tab=repositories`)
     .then((response) => {
       const $ = cheerio.load(response.data);
 
@@ -124,8 +123,7 @@ module.exports.getUserRepo = (username, next = "") => {
 
       $("#user-repositories-list li").each((_, element) => {
         const $element = $(element);
-
-        extractEachRepo(repos, $element);
+        repos.push(extractEachRepo($, username, $element));
       });
 
       const afterValue = $('div[data-test-selector="pagination"] a')
@@ -142,13 +140,12 @@ module.exports.getUserRepo = (username, next = "") => {
       return { repos, next: after };
     })
     .catch((error) => {
-      console.log(error.message);
+      console.log(error);
       return { error: error.message, message: "User Not Found" };
     });
 };
 
 module.exports.getOrganizationRepo = (username, page = 1) => {
-  console.log(`https://github.com/${username}?tab=repositories&page=${page}`);
   return axios
     .get(`https://github.com/${username}?tab=repositories&page=${page}`)
     .then((response) => {
@@ -158,8 +155,7 @@ module.exports.getOrganizationRepo = (username, page = 1) => {
 
       $(".org-repos li").each((_, element) => {
         const $element = $(element);
-
-        extractEachRepo(repos, $element);
+        repos.push(extractEachRepo($, username, $element));
       });
 
       const afterValue = $(".pagination a.next_page").last().attr("href");
@@ -174,7 +170,7 @@ module.exports.getOrganizationRepo = (username, page = 1) => {
       return { repos, next: after };
     })
     .catch((error) => {
-      console.log(error.message);
+      console.log(error);
       return { error: error.message, message: "Organization Not Found" };
     });
 };
