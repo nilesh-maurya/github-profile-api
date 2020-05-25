@@ -64,8 +64,6 @@ app.get("/api/:username/repos", async (req, res) => {
   const type = req.query.type;
   let next = req.query.next;
 
-  console.log(next, username);
-
   try {
     let repoData;
 

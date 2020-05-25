@@ -108,7 +108,6 @@ module.exports.getPinnedRepo = (username) => {
       return pinned;
     })
     .catch((error) => {
-      console.log(error.message);
       return { error: error.message, message: "User Not Found" };
     });
 };
@@ -134,13 +133,11 @@ module.exports.getUserRepo = (username, next = "") => {
 
       if (afterValue && afterValue.includes("after")) {
         after = afterValue.match(/after=(.*)/)[1].slice(0, 56);
-        console.log(afterValue, after);
       }
 
       return { repos, next: after };
     })
     .catch((error) => {
-      console.log(error);
       return { error: error.message, message: "User Not Found" };
     });
 };
@@ -164,13 +161,11 @@ module.exports.getOrganizationRepo = (username, page = 1) => {
 
       if (afterValue && afterValue.includes("page")) {
         after = afterValue.split("&")[0].slice(-1);
-        console.log(afterValue, after);
       }
 
       return { repos, next: after };
     })
     .catch((error) => {
-      console.log(error);
       return { error: error.message, message: "Organization Not Found" };
     });
 };
