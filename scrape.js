@@ -115,7 +115,7 @@ module.exports.getPinnedRepo = (username) => {
 
 module.exports.getUserRepo = (username, next = "") => {
   return axios
-    .get(`https://github.com/${username}?tab=repositories`)
+    .get(`https://github.com/${username}?tab=repositories&after=${next}`)
     .then((response) => {
       const $ = cheerio.load(response.data);
 

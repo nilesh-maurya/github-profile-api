@@ -10,7 +10,7 @@ app.use(cors());
 app.get("/", (req, res) => {
   res.json({
     user_Profile_data: req.headers.host + "/api/username",
-    repos: req.headers.host + "/api/username/repos",
+    repos: req.headers.host + "/api/username/repos?next=${nextToken}",
   });
 });
 
